@@ -3,7 +3,7 @@ using namespace std;
 
 void invalid_input()
 {
-	cout << "Invalid input. Coordinates must be 2 single space-seperated values between 0-2 inclusive and be an empty space." << endl;
+	cout << endl << "Invalid input. Coordinates must be 2 single space-seperated values between 0-2 inclusive and be an empty space." << endl;
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
@@ -19,14 +19,24 @@ int main()
 
 	while(1)
 	{
-		cout << winner << endl;
 		board.print_self();
 		winner = board.has_winner();
 
 		if(winner)
 		{
 			cout << "Player " << winner << " has won!\n";
-			break;
+			char replay = ' ';
+			cout << "Play again? (y/n): ";
+			cin >> replay;
+			if(replay == 'y')
+			{
+				board.reset();
+				turn = true;
+				continue;
+			}else
+			{
+				break;
+			}
 		}
 
 		if(turn)

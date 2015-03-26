@@ -33,6 +33,7 @@ public:
 	void set_space(Coords c, char value);
 	char get_space(Coords c);
 	void print_self();
+	void reset();
 	int has_winner();
 
 	GameBoard();
@@ -74,7 +75,7 @@ int GameBoard::has_winner()
 {
 	for(int x = 0; x < 3 ; x++)
 	{
-		if(spaces[x][0] == spaces[x][1] == spaces[x][2])
+		if(spaces[x][0] == spaces[x][1] && spaces[x][2] == spaces[x][0])
 		{
 			//Horizontal winner
 			if(spaces[x][0] == 'X') return 1;
@@ -84,7 +85,7 @@ int GameBoard::has_winner()
 
 	for(int y = 0; y < 3; y++)
 	{
-		if(spaces[0][y] == spaces[1][y] == spaces[2][y])
+		if(spaces[0][y] == spaces[1][y] && spaces[2][y] == spaces[0][y])
 		{
 			//Verticle winner.
 			if(spaces[0][y] == 'X') return 1;
@@ -92,8 +93,27 @@ int GameBoard::has_winner()
 		}
 	}
 
+	//Diagonal winner.
+	if(spaces[0][0] == spaces[1][1] && spaces[0][0] == spaces[2][2] ||
+	   spaces[0][2] == spaces[1][1] && spaces[0][2] == spaces[2][0])
+	{
+		if(spaces[1][1] == 'X') return 1;
+		if(spaces[1][1] == 'O') return 2;
+	}
+
 	//No winner.
 	return 0;
+}
+
+void GameBoard::reset()
+{
+	for(int x = 0; x < 3; x++)
+	{
+		for(int y = 0; y < 3; y++)
+		{
+			spaces[x][y] = '*';
+		}
+	}
 }
 
 GameBoard::GameBoard()
