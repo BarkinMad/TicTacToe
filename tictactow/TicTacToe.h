@@ -33,6 +33,8 @@ public:
 	void set_space(Coords c, char value);
 	char get_space(Coords c);
 	void print_self();
+	int has_winner();
+
 	GameBoard();
 
 protected:
@@ -66,6 +68,32 @@ void GameBoard::print_self()
 bool GameBoard::valid_coords(int x, int y, bool player)
 {
 	return ((x >= 0 && x <= 2 && y >= 0 && y <= 2) && (spaces[x][y] == '*'));
+}
+
+int GameBoard::has_winner()
+{
+	for(int x = 0; x < 3 ; x++)
+	{
+		if(spaces[x][0] == spaces[x][1] == spaces[x][2])
+		{
+			//Horizontal winner
+			if(spaces[x][0] == 'X') return 1;
+			if(spaces[x][0] == 'O') return 2;
+		}
+	}
+
+	for(int y = 0; y < 3; y++)
+	{
+		if(spaces[0][y] == spaces[1][y] == spaces[2][y])
+		{
+			//Verticle winner.
+			if(spaces[0][y] == 'X') return 1;
+			if(spaces[0][y] == 'O') return 2;
+		}
+	}
+
+	//No winner.
+	return 0;
 }
 
 GameBoard::GameBoard()

@@ -12,13 +12,23 @@ int main()
 {
 	GameBoard board = GameBoard();
 	bool turn = true;
+	int winner = 0; 
 
 	int p1x = 0, p1y = 0;
 	int p2x = 0, p2y = 0; 
 
 	while(1)
 	{
+		cout << winner << endl;
 		board.print_self();
+		winner = board.has_winner();
+
+		if(winner)
+		{
+			cout << "Player " << winner << " has won!\n";
+			break;
+		}
+
 		if(turn)
 		{
 			//Player 1 Turn.
