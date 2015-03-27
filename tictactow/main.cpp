@@ -11,11 +11,16 @@ void invalid_input()
 int main()
 {
 	GameBoard board = GameBoard();
+	
 	bool turn = true;
+	char bot  = 'n'; 
 	int winner = 0; 
 
 	int p1x = 0, p1y = 0;
 	int p2x = 0, p2y = 0; 
+
+	cout << "Do you want to play with a computer? (y/n): ";
+	cin >> bot;
 
 	while(1)
 	{
@@ -37,6 +42,25 @@ int main()
 			{
 				break;
 			}
+		}else
+		{
+			if(board.has_tie())
+			{
+				cout << "The board has been filled and there is no winner. Draw!\n";
+				char replay = ' ';
+				cout << "Play again? (y/n): ";
+				cin >> replay;
+				if(replay == 'y')
+				{
+					board.reset();
+					turn = true;
+					continue;
+				}else
+				{
+					break;
+				}
+			}
+
 		}
 
 		if(turn)
@@ -53,15 +77,23 @@ int main()
 			}
 		}else
 		{
-			//Player 2 Turn.
-			cout << "Player 2: ";
-			if(cin >> p2x >> p2y && board.valid_coords(p2x, p2y, turn))
+			//Bot turn
+			if(bot == 'y')
 			{
-				board.set_space(Coords(p2x, p2y), 'O');
+				board.auto_fill();
 				turn = !turn;
 			}else
 			{
-				invalid_input();
+				//Player 2 Turn.
+				cout << "Player 2: ";
+				if(cin >> p2x >> p2y && board.valid_coords(p2x, p2y, turn))
+				{
+					board.set_space(Coords(p2x, p2y), 'O');
+					turn = !turn;
+				}else
+				{
+					invalid_input();
+				}
 			}
 		}
 	}

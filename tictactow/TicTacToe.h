@@ -1,4 +1,7 @@
 #include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <time.h>  
 
 class Coords
 {
@@ -30,11 +33,15 @@ class GameBoard
 {
 public:
 	bool valid_coords(int x, int y, bool player);
-	void set_space(Coords c, char value);
 	char get_space(Coords c);
+	int has_winner();
+	
+	void set_space(Coords c, char value);
 	void print_self();
 	void reset();
-	int has_winner();
+	void auto_fill();
+	bool has_tie();
+
 
 	GameBoard();
 
@@ -105,6 +112,21 @@ int GameBoard::has_winner()
 	return 0;
 }
 
+bool GameBoard::has_tie()
+{
+	int filled_spaces = 0;
+	for(int x = 0; x < 3; x++)
+	{
+		for(int y = 0; y < 3; y++)
+		{
+			if(spaces[x][y] != '*')
+				filled_spaces++;
+		}
+	}
+
+	return filled_spaces >= 9;
+}
+
 void GameBoard::reset()
 {
 	for(int x = 0; x < 3; x++)
@@ -114,6 +136,29 @@ void GameBoard::reset()
 			spaces[x][y] = '*';
 		}
 	}
+}
+
+void GameBoard::auto_fill()
+{
+	//Find all free_spaces.
+	std::vector<Coords> free_spaces;
+	for(int x = 0; x < 3; x++)
+	{
+		for(int y = 0; y < 3; y++)
+		{
+			if(spaces[x][y] == '*')
+				free_spaces.push_back(Coords(x, y));
+		}
+	}
+
+	//Choose one randomly
+	srand(time(NULL));
+	int coord = rand() % free_spaces.size();
+	int x = free_spaces[coord].get_x();
+	int y = free_spaces[coord].get_y();
+	//Fill it in.
+	std::cout << "BOT: " << x << " " << y << std::endl;
+	spaces[x][y] = 'O';
 }
 
 GameBoard::GameBoard()
